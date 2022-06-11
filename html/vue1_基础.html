@@ -7,15 +7,69 @@
     <title>Document</title>
 </head>
 <body>
-    <div id="app">{{msg}}</div>
+    <div id="app">
+        <!-- {{msg}} -->
+        <button @click="changeDate">更改数据</button>
+
+        <!-- 数组 -->
+        <ul>
+            <li v-for="item in list">{{item}}</li>
+        </ul>
+
+        <!-- 对象 -->
+        <!-- <ul>
+            <li v-for="(value,index) in person">{{value}}---------{{index}}</li>
+        </ul> -->
+
+        <!-- 遍历数据 -->
+        <ul>
+            <h2>遍历数据</h2>
+            <!-- rose1-----20------BJ -->
+            <!-- <li v-for="item in studentsList">{{item.name}}-----{{item.age}}------{{item.address}}</li> -->
+            <li v-for="(item,index) in studentsList">
+                <h3>第{{index+1}}个人的信息</h3>
+                <ul>
+                    <li v-for="(val,key) in item">{{key}}-----{{val}}</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
     <script src="../js/vue.js"></script>
     <script>
         let vm = new Vue({
             el: '#app',
             data: {
-                msg: 'hello world'
+                // msg: 'hello world'
+                list: [1,3,6],
+                person: {
+                    name:"rose",
+                    age: 20,
+                    address: 'BJ'
+                },
+                studentsList: [
+                    {
+                        name: "rose1",
+                        age: 20,
+                        address: 'BJ'
+                    },
+                    {
+                        name: "rose2",
+                        age: 30,
+                        address: 'AJ'
+                    },
+                    {
+                        name: "rose3",
+                        age: 40,
+                        address: 'CJ'
+                    }
+                ]
+            },
+            methods: {
+                changeDate(){
+                    this.list.push(5)
+                }
             }
-        })
+        });
     </script>
 </body>
 </html>

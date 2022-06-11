@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul,li{
+            list-style: none;
+        }
+        .tab {
+            width: 600px;
+            border: 1px solid #000;
+        }
+        .tab>ul{
+            display: flex;
+            justify-content: space-between;
+        }
+        .tab .title .active{
+            color: red;
+        }
+        .tab .cont ul{
+            display: none;
+        }
+        .tab .cont ul.active{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+   <div id="app">
+        <div class="tab">
+            <ul class="title">
+                <li v-for="(item,index) in list" 
+                :class="curIndex === index ? 'active':''"
+                @click="toggle(index)"
+                >{{item.title}}------{{index}}</li>
+            </ul>
+            <div class="cont">
+                <ul v-for="(item,index) in list" :class="curIndex === index ? 'active':''">
+                    <li v-for="(smallItem,idx) in item.contList" >{{smallItem.cont}}</li>
+                </ul>
+            </div>
+        </div>
+   </div>
+   <script src="../js/vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                curIndex: 0,
+                list: [
+                    {
+                        title: '精华',
+                        contList:[
+                            {id: 1,cont:'精华数据1'},
+                            {id: 2,cont:'精华数据2'},
+                            {id: 3,cont:'精华数据3'}
+                        ]
+                    },
+                    {
+                        title: '分享',
+                        contList:[
+                            {id: 1,cont:'分享数据1'},
+                            {id: 2,cont:'分享数据2'},
+                            {id: 3,cont:'分享数据3'}
+                        ]
+                    },
+                    {
+                        title: '问答',
+                        contList:[
+                            {id: 1,cont:'问答数据1'},
+                            {id: 2,cont:'问答数据2'},
+                            {id: 3,cont:'问答数据3'}
+                        ]
+                    }
+                ]
+            },
+            methods: {
+               toggle(index){
+                // 把当前点击的索引index赋值给curIndex
+                this.curIndex = index;
+               }
+            }
+            });
+    </script>
+
+</body>
+</html>
+
+
+<!-- 
+    <div class="tab">
+            <ul class="title">
+                <li  
+                    v-for="(item,index) in list" 
+                    :class="curIndex === index ? 'active':''"
+                    @click="toggle(index)"
+                >{{item.title}}--------{{index}}</li>
+            </ul>
+            <div class="cont">
+                <ul  v-for="(item,index) in list" :class="curIndex === index ? 'active':''">
+                    <li  v-for="(smallItem,idx) in item.contList">{{smallItem.cont}}</li>
+                </ul>
+            </div>
+        </div>
+
+         methods: {
+                toggle(index){
+                    this.curIndex = index;
+                }
+            }
+ -->
