@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <p>商品数量：<input type="text" class="num" v-model="num1"></p>
+        <p><button @click="changeNum()">改变商品数量</button></p>
+        <p :title="getToal">显示总价：{{getTotal}}</p>
+        <hr>
+        <p>使用总价：{{getTotal}}</p>
+    </div>
+    <!-- 计算属性computed和方法methods的区别
+          1、如果一个业务流程没有返回值，则用methods实现；有返回值，用computed和methods都可以实现
+
+          2、计算属性和方法都是函数，计算属性一定有返回值，他通过对数据进行处理返回一个结果      
+
+          3、在模板中调用时，计算属性不加（），methods必须加（）
+          
+          4、计算属性和方法最重要的区别是计算属性有缓存功能
+          方法被调用时每次都要重复执行函数
+          计算属性初次调用时执行函数，然后会缓存结果，当再次调用时，如果依赖的响应式数据没有发生改变，则直接返回之前缓存的结果
+          如果依赖发生了改变，则会再次执行函数并缓存结果
+    -->
+    <script src="../js/vue.js"></script>
+     <script>
+         let vm = new Vue({
+             el: '#app',
+            //  如果需要数据变化时触发视图更新，就要把数据注册到data
+             data: {
+                 price: 200,
+                 num1: '',
+                 num2: 3
+             },
+            //  计算属性有返回值的函数，通过对数据进行处理，返回一个结果，节省性能，只会渲染一次
+            // 调用的时候不需要括号（）
+            // 在模板中相当于data中的数据
+             computed: {
+                getTotal(){
+                    console.log("计算一次");
+                    let total;
+                    total = this.price * this.num2;//只有这个依赖的响应数据改变时，才会重新渲染
+                    return total
+                }
+             },
+             methods: {
+                changeNum(){
+                    this.num2  = this.num1;  
+                }
+             }
+             });
+     </script>
+</body>
+</html>

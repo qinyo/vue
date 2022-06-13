@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <p>商品数量：<input type="text" class="num" v-model="num1"></p>
+        <p><button @click="changeNum()">改变商品数量</button></p>
+        <p>显示总价：{{getTotal}}</p>
+        <hr>
+        <p>使用总价：{{getTotal}}</p>
+    </div>
+    <script src="../js/vue.js"></script>
+     <script>
+         let vm = new Vue({
+             el: '#app',
+             data: {
+                 price: 200,
+                 num1: '',
+                 num2: 3,
+                 getTotal:0
+             },
+             methods: {
+                changeNum(){
+                    this.num2 = this.num1;
+                }
+                
+             },
+             watch: {
+                num2(){
+                    console.log('侦听一次');
+                    this.getTotal = this.price * this.num2;
+                }
+             }
+             });
+     </script>
+</body>
+</html>
