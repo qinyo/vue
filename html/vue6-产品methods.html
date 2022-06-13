@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        ul li{
+            list-style: none;
+        }
+        .tab{
+            position: fixed;
+            top:0;
+            display: flex;
+            justify-content: space-between;
+            width: 800px;
+            height: 50px;
+            background: #fff;
+            /* border: 1px solid #000; */
+        }
+        .floor{
+            width: 800px;
+            height: 1000px;
+            /* border: 1px solid #000; */
+        }
+        .function{
+            background-color: rgb(221,78,78);
+            margin-top: 50px;
+        }
+        .params{
+            background-color: rgb(72,197,197);
+        }
+        .ratings{
+            background-color: rgb(218,104,170);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <ul class="tab">
+            <li @click="toggle(0)">产品功能</li>
+            <li @click="toggle(1)">产品参数</li>
+            <li @click="toggle(2)">产品评价</li>
+        </ul>
+        <div class="function floor">产品功能</div>
+        <div class="params floor">产品参数</div>
+        <div class="ratings floor">产品评价</div>
+    </div>
+    <script src="../js/vue.js"></script>
+     <script>
+         let listHeight = [50,1050,2050];
+         let vm = new Vue({
+             el: '#app',
+             data: {
+                 
+             },
+             methods: {
+                toggle(index){
+                    console.log('切换一次')//重复点击重复调用函数
+                    window.scrollTo({
+                        top: listHeight[index],
+                        behavior:"smooth"
+                    })
+                }
+             }
+             });
+     </script>
+</body>
+</html>
