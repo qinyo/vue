@@ -72,9 +72,11 @@
              el: '#app',
              data: {
                  isShow: true,
-                 curIndex: 0,
+                 curIndex: -1,
                  list:[],
                  classList: ['function','params','ratings'],
+                 flag: true,
+                 acticeIndex : -1
              },
             //  请求异步数据，但是数据还没有获取，dom也没有渲染
              created(){
@@ -85,7 +87,8 @@
             // 此时的dom是空数据渲染的dom
              methods:{
                 toggle(index){
-                    this.curIndex = index
+                    this.curIndex = index;
+                    this.flag = true
                 },
                 getInitData(){
                     setTimeout(()=>{
@@ -99,7 +102,25 @@
                         // console.log(this.$refs.floor);//可以正常获取dom
                         // this.listHeight是在vue实例上添加一个新属性，但并不是响应式数据
                         this.listHeight = this.$refs.floor.map(item=>item.offsetTop)
-
+                        window.onscroll = ()=>{
+                            // console.log('滚动')
+                            this.flag = false;
+                            let scrollTop = document.documentElement.scrollTop;
+                            for(let i = 0;i < this.listHeight.length - 1;i++){
+                                if(scrollTop < this.listHeight[0]){
+                                    this.curIndex = -1;
+                                    break;
+                                }
+                                if(scrollTop >= this.listHeight[i] && scrollTop <= this.listHeight[i+1]){
+                                    this.curIndex = i;
+                                    break;
+                                }
+                            }
+                            if(scrollTop >= this.listHeight[this.listHeight.length - 1]){
+                                this.curIndex = this.listHeight.length - 1;
+                            }
+                            console.log(this.curIndex);
+                        }
                     })
                 },1000)
                 },
@@ -116,6 +137,9 @@
                 curIndex(){
                     // console.log('切换一次')//重复点击只会渲染一次
                     this.screenTo()
+                    if(this.flag){
+                        this.screenTo()
+                    }
                 }
              }
              });
