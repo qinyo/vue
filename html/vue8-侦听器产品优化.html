@@ -44,9 +44,13 @@
     </style>
 </head>
 <body>
+    <!-- 
+        1、页面初始化时请求数据(在created生命周期里实现)
+        2、获取楼层的偏移值
+     -->
     <div id="app">
         <div class="loading" v-if="isShow">loading.....</div>
-        <ul class="tab">
+        <ul class="tab" v-if="list.length">
             <li v-for="(item,index) in list" @click="toggle(index)">{{item.title}}</li>
         </ul>
         <div class="floor" v-for="(item,index) in list" :class="classList[index]" ref="floor">
@@ -66,7 +70,7 @@
                  isShow: true,
                  curIndex: 0,
                  list:[],
-                 classList: ['function','params','ratings']
+                 classList: ['function','params','ratings'],
              },
              created(){
                 console.log('created');
@@ -74,6 +78,15 @@
                     console.log(list);
                     this.list = list;
                     this.isShow = false;
+                    // 此时不能获取楼层的dom,因为数据改变后到视图重新渲染，之间有延迟
+                    console.log(this.$refs.floor)//undefined
+                    this.$nextTick(()=>{
+                        console.log('$nextTick');
+                        // console.log(this.$refs.floor);//可以正常获取dom
+                        // this.listHeight是在vue实例上添加一个新属性，但并不是响应式数据
+                        this.listHeight = this.$refs.floor.map(item=>item.offsetTop)
+
+                    })
                 },1000)
              },
              methods:{
@@ -85,7 +98,7 @@
                 curIndex(){
                     console.log('切换一次')//重复点击只会渲染一次
                     window.scrollTo({
-                        top: listHeight[this.curIndex],
+                        top: this.listHeight[this.curIndex],
                         behavior:"smooth"
                     })
                 }
