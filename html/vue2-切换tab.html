@@ -38,7 +38,7 @@
                 >{{item.title}}------{{index}}</li>
             </ul>
             <div class="cont">
-                <ul v-for="(item,index) in list" :class="curIndex === index ? 'active':''">
+                <ul v-for="(item,index) in list" :class="curIndex == index ? 'active':''">
                     <li v-for="(smallItem,idx) in item.contList" >{{smallItem.cont}}</li>
                 </ul>
             </div>

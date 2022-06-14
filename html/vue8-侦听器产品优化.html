@@ -23,6 +23,9 @@
             background: #fff;
             /* border: 1px solid #000; */
         }
+        .tab .active{
+            background-color: brown;
+        }
         .floor{
             width: 800px;
             height: 1000px;
@@ -41,6 +44,7 @@
         .loading{
             margin-top: 200px;
         }
+
     </style>
 </head>
 <body>
@@ -51,7 +55,7 @@
     <div id="app">
         <div class="loading" v-if="isShow">loading.....</div>
         <ul class="tab" v-if="list.length">
-            <li v-for="(item,index) in list" @click="toggle(index)">{{item.title}}</li>
+            <li v-for="(item,index) in list" @click="toggle(index)"  :class="curIndex == index ? 'active' : ''">{{item.title}}</li>
         </ul>
         <div class="floor" v-for="(item,index) in list" :class="classList[index]" ref="floor">
             <ul>
@@ -72,9 +76,19 @@
                  list:[],
                  classList: ['function','params','ratings'],
              },
+            //  请求异步数据，但是数据还没有获取，dom也没有渲染
              created(){
                 console.log('created');
-                setTimeout(()=>{
+                this.getInitData()
+             },
+            //  数据和模板编译后，用编译后的dom代替原来的dom（挂载后）
+            // 此时的dom是空数据渲染的dom
+             methods:{
+                toggle(index){
+                    this.curIndex = index
+                },
+                getInitData(){
+                    setTimeout(()=>{
                     console.log(list);
                     this.list = list;
                     this.isShow = false;
@@ -88,19 +102,20 @@
 
                     })
                 },1000)
-             },
-             methods:{
-                toggle(index){
-                    this.curIndex = index
-                }
-             },
-             watch: {
-                curIndex(){
-                    console.log('切换一次')//重复点击只会渲染一次
+                },
+                // 页面滚动
+                screenTo(){
                     window.scrollTo({
                         top: this.listHeight[this.curIndex],
                         behavior:"smooth"
                     })
+                }
+                
+             },
+             watch: {
+                curIndex(){
+                    // console.log('切换一次')//重复点击只会渲染一次
+                    this.screenTo()
                 }
              }
              });
