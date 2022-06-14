@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <button @click="getDom">获取dom</button>
+        <ul ref="ulEl">
+            <li v-for="item in list" ref="liEl">{{item}}</li>
+        </ul>
+        <p ref="pEl">这是一个段落</p>
+    </div>
+    <script src="../js/vue.js"></script>
+     <script>
+         let vm = new Vue({
+             el: '#app',
+             data: {
+                 txt: '获取dom',
+                 list: ['a','b','c','d']
+             },
+             methods: {
+                getDom(){
+                    // console.log(this.$refs.ulEl);
+                    // 获取索引为3的li距离页面顶端的偏移值
+                    console.log(this.$refs.liEl[3].offsetTop);
+                    
+                }
+             }
+             });
+     </script>
+</body>
+</html>

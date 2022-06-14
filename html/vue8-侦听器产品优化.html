@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        ul li{
+            list-style: none;
+        }
+        .tab{
+            position: fixed;
+            top:0;
+            display: flex;
+            justify-content: space-between;
+            width: 800px;
+            height: 50px;
+            background: #fff;
+            /* border: 1px solid #000; */
+        }
+        .floor{
+            width: 800px;
+            height: 1000px;
+            /* border: 1px solid #000; */
+        }
+        .function{
+            background-color: rgb(221,78,78);
+            margin-top: 50px;
+        }
+        .params{
+            background-color: rgb(72,197,197);
+        }
+        .ratings{
+            background-color: rgb(218,104,170);
+        }
+        .loading{
+            margin-top: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="loading" v-if="isShow">loading.....</div>
+        <ul class="tab">
+            <li v-for="(item,index) in list" @click="toggle(index)">{{item.title}}</li>
+        </ul>
+        <div class="floor" v-for="(item,index) in list" :class="classList[index]" ref="floor">
+            <ul>
+                <li v-for="(smallItem,index) in item.listData" >id:{{smallItem.id}}--------标题：{{smallItem.cont}}</li>
+            </ul>
+        </div>
+        
+    </div>
+    <script src="../js/vue.js"></script>
+    <script src="../js/vue8-data.js"></script>
+     <script>
+         
+         let vm = new Vue({
+             el: '#app',
+             data: {
+                 isShow: true,
+                 curIndex: 0,
+                 list:[],
+                 classList: ['function','params','ratings']
+             },
+             created(){
+                console.log('created');
+                setTimeout(()=>{
+                    console.log(list);
+                    this.list = list;
+                    this.isShow = false;
+                },1000)
+             },
+             methods:{
+                toggle(index){
+                    this.curIndex = index
+                }
+             },
+             watch: {
+                curIndex(){
+                    console.log('切换一次')//重复点击只会渲染一次
+                    window.scrollTo({
+                        top: listHeight[this.curIndex],
+                        behavior:"smooth"
+                    })
+                }
+             }
+             });
+     </script>
+</body>
+</html>
