@@ -54,7 +54,7 @@
      -->
     <div id="app">
         <div class="loading" v-if="isShow">loading.....</div>
-        <ul class="tab" v-if="list.length">
+        <ul class="tab" v-if="list.length" ref="ulEl">
             <li v-for="(item,index) in list" @click="toggle(index)"  :class="curIndex == index ? 'active' : ''">{{item.title}}</li>
         </ul>
         <div class="floor" v-for="(item,index) in list" :class="classList[index]" ref="floor">
@@ -66,8 +66,15 @@
     </div>
     <script src="../js/vue.js"></script>
     <script src="../js/vue8-data.js"></script>
+    <!-- 
+        99      1s后执行
+        103     list改变
+        106     isShow = false
+
+        110     回调会在数据改变后，视图更新完毕后调用
+        151     onscroll页面绑定的 => 133 scroll
+     -->
      <script>
-         
          let vm = new Vue({
              el: '#app',
              data: {
@@ -83,67 +90,82 @@
                 console.log('created');
                 this.getInitData()
              },
+             mounted(){
+                console.log('mounted',this.$refs.ulEl);
+             },
             //  数据和模板编译后，用编译后的dom代替原来的dom（挂载后）
             // 此时的dom是空数据渲染的dom
              methods:{
                 toggle(index){
                     this.curIndex = index;
-                    this.flag = true
+                    this.flag = true  //点击true(101,135)
                 },
                 // 1秒后执行，然后created可以获取初始数据
                 getInitData(){
                     setTimeout(()=>{
-                    console.log(list);
+                    // console.log(list);
                     this.list = list;
                     this.isShow = false;
                     // 此时不能获取楼层的dom,因为数据改变后到视图重新渲染，之间有延迟
-                    console.log(this.$refs.floor)//undefined
+                    // console.log(this.$refs.floor)
                     this.$nextTick(()=>{
-                        console.log('$nextTick');
-                        // console.log(this.$refs.floor);//可以正常获取dom
-                        // this.listHeight是在vue实例上添加一个新属性，但并不是响应式数据
-                        this.listHeight = this.$refs.floor.map(item=>item.offsetTop)
-                        window.onscroll = ()=>{
-                            // console.log('滚动')
-                            this.flag = false;
-                            let scrollTop = document.documentElement.scrollTop;
-                            for(let i = 0;i < this.listHeight.length - 1;i++){
-                                if(scrollTop < this.listHeight[0]){
-                                    this.curIndex = -1;
-                                    break;
-                                }
-                                if(scrollTop >= this.listHeight[i] && scrollTop <= this.listHeight[i+1]){
-                                    this.curIndex = i;
-                                    break;
-                                }
-                            }
-                            if(scrollTop >= this.listHeight[this.listHeight.length - 1]){
-                                this.curIndex = this.listHeight.length - 1;
-                            }
-                            console.log(this.curIndex);
-                        }
+                        // console.log('$nextTick');
+                        // [500,1200,1500]
+                        this.$nextTick(()=>{
+                            this.listHeight = this.$refs.floor.map(item => item.offsetTop)
+                            this.onScroll()
+                        })
                     })
                 },1000)
                 },
-                // 页面滚动
-                screenTo(){
+                // 切换标签触发页面滚动
+                scrollTo(){
+                    // 禁用页面绑定的onscroll事件
+                    // console.log(this.$refs.floor)
+                    this.offScroll()
                     window.scrollTo({
-                        top: this.listHeight[this.curIndex],
-                        behavior:"smooth"
+                        top:this.listHeight[this.curIndex]
                     })
+                    setTimeout(()=>{
+                        this.onScroll()
+                    },0)
+                },
+                // 定位索引
+                scroll(){
+                    this.flag = false;//滑动false;避免跟点击标签的冲突(101,135)
+                    let scrollTop = document.documentElement.scrollTop;
+                    for(let i = 0;i < this.listHeight.length - 1;i++){
+                        if(scrollTop < this.listHeight[0]){
+                            this.curIndex = -1;
+                            break;
+                            }
+                        if(scrollTop >= this.listHeight[i] && scrollTop <= this.listHeight[i+1]){
+                            this.curIndex = i;
+                            break;
+                            }
+                        }
+                        if(scrollTop >= this.listHeight[this.listHeight.length - 1]){
+                            this.curIndex = this.listHeight.length - 1;
+                        }
+                        console.log(this.curIndex);
+                },
+                onScroll(){
+                    window.addEventListener("scroll",this.scroll)
+                },
+                offScroll(){
+                    window.removeEventListener("scroll",this.scroll)
                 }
-                
              },
              watch: {
                 curIndex(){
                     // console.log('切换一次')//重复点击只会渲染一次
-                    this.screenTo()
+                    // this.screenTo()
                     if(this.flag){
-                        this.screenTo()
+                        this.scrollTo()
                     }
                 }
-             }
-             });
+                }
+            });
      </script>
 </body>
 </html>
