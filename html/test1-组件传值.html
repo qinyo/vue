@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!-- 
+    需求
+
+    1、把html中“子组件”部分抽象为一个组件
+    2、在子组件中显示父组件传过来的msg
+    3、子组件有数据num，初始值为9，单击子组件的按钮向父组件传值，在父组件显示子组件传过来的num值
+-->
+<body>
+    <div id="app">
+        <h1>父组件</h1>
+        <div>子组件传过来的num:{{num}}</div>
+
+       <run :info="msg" @send-data="getData"></run>
+    </div>
+    <!-- 
+        子组件的html
+        <h1>子组件</h1>
+        <button>单击该按钮向父组件传值</button>
+        <p>父组件传过来的msg值</p>
+     -->
+
+    <script src="../js/vue.js"></script>
+    <script>
+        var Run = {
+            props: ['info'],
+            template: `
+                <div>
+                    <h1>子组件</h1>
+                    <button @click="send">单击该按钮向父组件传值</button>
+                    <p>父组件传过来的msg值-----{{info}}</p>
+                </div>
+            `,
+            data(){
+                return{
+                    num: 9
+                }
+            },
+            methods: {
+                send(){
+                    this.$emit("send-data",this.num)
+                }
+            }
+        }
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                msg: "父组件的数据",
+                num: 0
+            },
+            methods: {
+                getData(num){
+                    console.log("监听子组件数据",num);
+                    this.num = num;
+                }
+            },
+            components: {
+                Run
+            }
+           
+        });
+    </script>
+</body>
+</html>
+
+<!--  <com-a :info="msg" @send-data="getData"></com-a> -->
+<!-- 
+    <script>
+        var ComA = {
+            props:['info'],
+            template: `
+            <div>
+                <h1>子组件</h1>
+                <button @click="send">单击该按钮向父组件传值</button>
+                <p>父组件传过来的msg值----{{info}}</p>
+            </div>
+            `,
+            // data一定是个函数
+            data(){
+                return{
+                    num: 9
+                }
+            },
+            methods: {
+                send(){
+                    this.$emit("send-data",this.num)
+                }
+
+            }
+        }
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                msg: "父组件的数据",
+                num: 0
+            },
+            methods: {
+                getData(num){
+                    console.log("监听到子组件数据",num)
+                    this.num = num
+                }
+            },
+            components: {
+                ComA
+            }
+           
+        });
+    </script>
+ -->
