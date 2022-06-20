@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!-- 
+    子组件向父组件传值
+    1、当子组件需要向父组件传值，就使用实例的$emit发送自定义事件，携带数据  this.$emit("send-data",this.msg)
+    2、父组件监听子组件的时间，接受数据
+        （1）在父组件绑定事件
+        （2）在相应事件的事件处理程序中，通过参数接受数据
+
+        28 -> 38 -> 21 -> 50
+ -->
+<body>
+    <div id="app">
+        <p>父组件接受到的子组件的数据--{{info}}</p>
+        <com-a @send-data="getData"></com-a>
+    </div>
+    <script src="../js/vue.js"></script>
+     <script>
+        var ComA = {
+            template:`
+                <div>
+                    <button @click="send">向父组件传值</button>
+                </div>
+            `,
+            data(){
+                return {
+                    msg: '子组件的数据'
+                }
+            },
+            methods: {
+                send(){
+                    this.$emit("send-data",this.msg)
+                }
+            }
+        }
+
+         let vm = new Vue({
+             el: '#app',
+             data: {
+                 info: ''
+             },
+             methods: {
+                getData(data){
+                    console.log("监听到子组件的值",data);
+                    this.info = data;
+                }
+             },
+             components: {
+                ComA
+             }
+             });
+     </script>
+</body>
+</html>
