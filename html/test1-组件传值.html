@@ -19,6 +19,8 @@
         <div>子组件传过来的num:{{num}}</div>
 
        <run :info="msg" @send-data="getData"></run>
+       <!-- = 前面不可以大写，只能bg-color -->
+       <!-- <run :bg-color="red"></run> -->
     </div>
     <!-- 
         子组件的html
@@ -31,6 +33,12 @@
     <script>
         var Run = {
             props: ['info'],
+            //props: ["bgColor"] 可以大写，不可以bg-color
+            // props: {            //对象形式
+            //      info: String,
+            //      num: Number
+            //      arr: Array
+            // }
             template: `
                 <div>
                     <h1>子组件</h1>
