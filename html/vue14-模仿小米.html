@@ -17,13 +17,13 @@
             <!-- 菜单 -->
             <div class="left" >
                 <ul class="list.length">
-                    <li v-for="(item,index) in list">{{item.title}}</li>
-                   
-
+                    <li v-for="(item,index) in list" @click="toggle(index)">
+                        {{item.title}}
+                    </li>
                 </ul>
             </div>
             <!-- 列表组件 -->
-            <list :list="list"></list>
+            <list :cur-list="list[curIndex]" v-if="list.length"></list>
         </div>
 
         <div class="footer">
@@ -35,11 +35,13 @@
      <script>
         // 列表组件
         var List = {
+            props: ["curList"],
             template: `
                 <div class="right">
-                    <ul>
-                        <li>小米手机</li>
-                        
+                    <ul v-if="curList">
+                        <li v-for="(item,index) in curList.items">
+                            {{item.proName}}
+                        </li>
                     </ul>
                 </div>
             `
@@ -49,7 +51,8 @@
          let vm = new Vue({
              el: '#app',
              data: {
-                 list: []
+                 list: [],
+                 curIndex: 0
              },
              created() {
                 this.getCategoryData()
@@ -60,6 +63,9 @@
                         this.list = listData
                         // console.log(this.list)
                     },1000)
+                },
+                toggle(index){
+                    this.curIndex = index
                 }
              },
              components: {
