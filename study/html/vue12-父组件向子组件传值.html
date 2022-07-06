@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            height: 100px;
+            margin-top: 50px;
+        }
+        .parent{
+            border: 1px solid #000;
+        }
+        .child{
+            border: 1px solid rgb(156, 15, 15);
+        }
+    </style>
+</head>
+<!-- 组件三步走
+    1、定义
+    2、注册
+    3、使用
+-->
+<!-- 
+    父组件向子组件传值
+    1、在父组件模板的子组件标签上添加自定义属性 -35
+    2、在定义子组件内通过props传值 -44 47
+    3、当父组件中子组件依赖的数据发送改变时，子组件也会更新视图
+ -->
+<body>
+    <div id="app">
+        <div class="parent">
+            父组件数据：msg------{{msg}}
+        </div>
+        <com-a :info="msg"></com-a>
+    </div>
+    
+    <script src="../js/vue.js"></script>
+     <script>
+        // 定义组件
+        const ComA = {
+            props: ['info'],
+            template: `
+                <div class="child">
+                    子组件的数据    msg------{{info}}
+                </div>
+            `
+        }
+
+         let vm = new Vue({
+             el: '#app',
+             data: {
+                 msg:'这是父组件的数据'
+             },
+             methods: {
+ 
+             },
+            //  注册局部组件
+             components :{
+                ComA
+             }
+             });
+     </script>
+</body>
+</html>

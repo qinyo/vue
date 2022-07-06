@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/categrory.css">
+</head>
+<body>
+    <div id="app">
+        <div class="header">
+            分类
+        </div>
+
+        <div class="main">
+            <!-- 菜单 -->
+            <div class="left" >
+                <ul class="list.length">
+                    <li v-for="(item,index) in list" @click="toggle(index)">
+                        {{item.title}}
+                    </li>
+                </ul>
+            </div>
+            <!-- 列表组件 -->
+            <list :cur-list="list[curIndex]" v-if="list.length"></list>
+        </div>
+
+        <div class="footer">
+            footer
+        </div>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script src="../js/mi-catergory.js"></script>
+     <script>
+        // 列表组件
+        var List = {
+            props: ["curList"],
+            template: `
+                <div class="right">
+                    <ul v-if="curList">
+                        <li v-for="(item,index) in curList.items">
+                            {{item.proName}}
+                        </li>
+                    </ul>
+                </div>
+            `
+        }
+
+        // 根实例
+         let vm = new Vue({
+             el: '#app',
+             data: {
+                 list: [],
+                 curIndex: 0
+             },
+             created() {
+                this.getCategoryData()
+             },
+             methods: {
+                getCategoryData(){
+                    setTimeout(()=>{
+                        this.list = listData
+                        // console.log(this.list)
+                    },1000)
+                },
+                toggle(index){
+                    this.curIndex = index
+                }
+             },
+             components: {
+                List
+             }
+             });
+     </script>
+</body>
+</html>
