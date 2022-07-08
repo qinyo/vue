@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+// import vant from 'vant'
+// import 'vant/lib/index.css'
 
 // createApp(App).mount('#app')
 // app组件渲染到public下的index.html 14行

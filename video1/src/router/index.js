@@ -8,6 +8,7 @@ import Index from '@/views/Index.vue';
 import Category from '@/views/Category.vue';
 import Star from '@/views/Star.vue';
 import My from '@/views/My.vue';
+import Myinfo from '@/views/Myinfo.vue';
 
 // 2. 定义一些路由
 // 每个路由都需要映射到一个组件。
@@ -18,6 +19,7 @@ const routes = [
     { path: '/category', component: Category },
     { path: '/star', component: Star },
     { path: '/my', component: My },
+    { path: '/myinfo',name: "Myinfo", component: Myinfo },
   ]
 
 // 3. 创建路由实例并传递 `routes` 配置
