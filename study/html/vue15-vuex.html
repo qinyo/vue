@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <com-a></com-a>
+        <hr>
+        <com-b></com-b>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script src="../js/vuex.js"></script>
+     <script>
+        // const store = new Vuex.store({
+        //     state: {
+        //         msg: '公有的数据',
+        //         score: [35,78,90,98,100]
+        //     }
+        // })
+        const ComA = {
+            template:`
+                <div class="box box1">
+                    组件A的内容
+                    <hr>
+                    <button @click="send">A数据传给B数据</button>
+                </div>
+            `,
+            data(){
+                return {
+                    msg: 'A数据'
+                }
+            },
+            methods: {
+                send(){
+                   
+                }
+            }
+        }
+        const ComB = {
+            template:`
+                <div class="box box2">
+                    组件B的内容
+                </div>
+            `
+        }
+
+         let vm = new Vue({
+             el: '#app',
+             data: {
+                 
+             },
+            //  store:store,
+             methods: {
+            //    send(){
+            //         console.log(this.$store);
+            //    }
+             },
+             components: {
+                ComA,ComB
+             }
+             });
+     </script>
+</body>
+</html>

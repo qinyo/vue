@@ -34,12 +34,13 @@
         <div class="parent">
             父组件数据：msg------{{msg}}
         </div>
+        <!-- 3、使用 -->
         <com-a :info="msg"></com-a>
     </div>
     
     <script src="../js/vue.js"></script>
      <script>
-        // 定义组件
+        // 1、定义组件
         const ComA = {
             props: ['info'],
             template: `
@@ -57,7 +58,7 @@
              methods: {
  
              },
-            //  注册局部组件
+            //  2、注册局部组件
              components :{
                 ComA
              }
